@@ -1,4 +1,4 @@
-package com.leandro.simpleeverythingapi;
+package com.leandro.simpleEverythingAPI;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
