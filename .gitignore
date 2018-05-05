@@ -69,6 +69,10 @@ local.properties
 # Compiled class file
 *.class
 
+# Configuration files
+/config/*
+!/config/*.example
+
 # Log file
 *.log
 
