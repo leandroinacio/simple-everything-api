@@ -6,11 +6,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +50,7 @@ public class UserController {
 
 	@PostMapping("insert")
 	public @ResponseBody ResponseEntity<Object> insert(@RequestBody User user, WebRequest request) {
-		user.setPassword(PasswordUtils.gerarBCrypt(user.getPassword()));
+		user.setPassword(PasswordUtils.generateBCrypt(user.getPassword()));
 		List<Authority> auth = new ArrayList<>();
 		Authority aut = new Authority(null, AuthorityName.ROLE_USER);
 		auth.add(aut);
@@ -69,7 +67,7 @@ public class UserController {
 
 	@PostMapping("update")
 	public ResponseEntity<Object> update(@RequestBody User user) {
-		user.setPassword(PasswordUtils.gerarBCrypt(user.getPassword()));
+		user.setPassword(PasswordUtils.generateBCrypt(user.getPassword()));
 		return new ResponseEntity<Object>(userService.updateUser(user), HttpStatus.OK);
 	}
 

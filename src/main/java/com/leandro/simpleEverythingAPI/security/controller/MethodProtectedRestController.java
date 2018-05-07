@@ -48,7 +48,7 @@ public class MethodProtectedRestController {
 		list.add(aut);
 		user.setAuthorities(list);
 		user.setLastPasswordResetDate(new Date());
-		user.setPassword(PasswordUtils.gerarBCrypt(user.getPassword()));
+		user.setPassword(PasswordUtils.generateBCrypt(user.getPassword()));
 		userRepo.save(user);
 		return "funcionou";
 	}

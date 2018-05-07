@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leandro.simpleEverythingAPI.models.Record;
-import com.leandro.simpleEverythingAPI.repositories.RecordRepo;
+import com.leandro.simpleEverythingAPI.repositories.IRecordRepo;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -17,7 +17,7 @@ import com.leandro.simpleEverythingAPI.repositories.RecordRepo;
 public class RecordController {
 
 	@Autowired
-	private RecordRepo recordRepo;
+	private IRecordRepo recordRepo;
 
 	@PostMapping("/fetchAll")
 	@PreAuthorize("hasRole('ADMIN')")

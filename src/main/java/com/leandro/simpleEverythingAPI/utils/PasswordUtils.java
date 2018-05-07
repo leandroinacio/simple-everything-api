@@ -8,23 +8,22 @@ public class PasswordUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(PasswordUtils.class);
 
-	public PasswordUtils() {
-	}
+	public PasswordUtils() {}
 
 	/**
-	 * Gera um hash utilizando o BCrypt.
+	 * Generates a hash using BCrypt.
 	 * 
-	 * @param senha
+	 * @param password
 	 * @return String
 	 */
-	public static String gerarBCrypt(String senha) {
-		if (senha == null) {
-			return senha;
+	public static String generateBCrypt(String password) {
+		if (password == null) {
+			return password;
 		}
 
-		log.info("Gerando hash com o BCrypt.");
+		log.info("Generating hash with BCrypt");
 		BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
-		return bCryptEncoder.encode(senha);
+		return bCryptEncoder.encode(password);
 	}
 
 }

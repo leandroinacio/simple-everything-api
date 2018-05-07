@@ -38,7 +38,7 @@ public class UserServiceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		List result = new ArrayList<User>();
+		ArrayList<User> result = new ArrayList<User>();
 		result.add(new User());
 		BDDMockito.given(this.userRepo.findAll()).willReturn(result);
 		BDDMockito.given(this.userRepo.findByUsername(Mockito.anyString())).willReturn(new User());
