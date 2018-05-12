@@ -20,9 +20,6 @@ import com.leandro.simpleEverythingAPI.security.Authority;
 public class User {
 
 	@Id
-	@Indexed(direction = IndexDirection.ASCENDING)
-	private String id;
-
 	@NotNull
 	private String username;
 
@@ -60,10 +57,9 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public User(String id, String username, String password, String firstname, String lastname, String email,
+	public User(String username, String password, String firstname, String lastname, String email,
 			Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
@@ -72,14 +68,6 @@ public class User {
 		this.enabled = enabled;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
@@ -148,7 +136,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstname=" + firstname
+		return "User [username=" + username + ", password=" + password + ", firstname=" + firstname
 				+ ", lastname=" + lastname + ", email=" + email + ", enabled=" + enabled + ", lastPasswordResetDate="
 				+ lastPasswordResetDate + ", authorities=" + authorities + "]";
 	}

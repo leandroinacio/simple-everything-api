@@ -10,7 +10,7 @@ import com.leandro.simpleEverythingAPI.models.User;
 import com.leandro.simpleEverythingAPI.repositories.IUserRepo;
 
 @Service
-public class JwtUserDetailsServiceImpl implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserRepo profileRepo;
@@ -20,6 +20,9 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         User profile = profileRepo.findByUsername(username);
 
         if (profile == null) {
+        	
+        	// TODO: Implement search using email as well
+        	
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
             return JwtUserFactory.create(profile);

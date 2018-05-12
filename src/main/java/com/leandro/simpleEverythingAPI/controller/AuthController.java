@@ -1,9 +1,13 @@
-package com.leandro.simpleEverythingAPI.security.controller;
+package com.leandro.simpleEverythingAPI.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,37 +21,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leandro.simpleEverythingAPI.models.CurrentUser;
 import com.leandro.simpleEverythingAPI.models.User;
-import com.leandro.simpleEverythingAPI.repositories.IUserRepo;
+import com.leandro.simpleEverythingAPI.security.Authority;
 import com.leandro.simpleEverythingAPI.security.JwtAuthenticationRequest;
 import com.leandro.simpleEverythingAPI.security.JwtAuthenticationResponse;
 import com.leandro.simpleEverythingAPI.security.JwtTokenUtil;
 import com.leandro.simpleEverythingAPI.security.JwtUser;
+import com.leandro.simpleEverythingAPI.services.IUserService;
+import com.leandro.simpleEverythingAPI.utils.PasswordUtils;
 
-@RestController
-@RequestMapping("/api/v1")
+/**
+ * @author Leandro Souza
+ */
 @CrossOrigin(origins = "http://localhost:8081")
-public class AuthenticationRestController {
+@RestController
+@RequestMapping("/auth/")
+public class AuthController {
 
     @Value("${jwt.header}")
     private String tokenHeader;
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
+	
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-    @Autowired
-    private IUserRepo userRepo;
-
-	@PostMapping("/auth")
+    
+	@Autowired
+	private IUserService userService;
+	
+	@PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
         // Perform the security
@@ -61,16 +71,13 @@ public class AuthenticationRestController {
 
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
         final String token = jwtTokenUtil.generateToken(userDetails);
-        final User user = userRepo.findByUsername(authenticationRequest.getUsername());
-        user.setPassword(null);
         
         // Return the token
-        return ResponseEntity.ok(new CurrentUser(token, user));
+        return ResponseEntity.ok(new CurrentUser(token, null));
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
+    @RequestMapping(value = "refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -84,4 +91,16 @@ public class AuthenticationRestController {
         }
     }
 
+	@PostMapping("addTest")
+	public @ResponseBody ResponseEntity<Object> fetchById() {
+		ArrayList<Authority> auths = new ArrayList<>();
+		User user = userService.createUser(new User("test", PasswordUtils.generateBCrypt("test123"), "Tester", "Hue", "tester@hue.com", true, new Date(), auths));
+		return new ResponseEntity<Object>(user, HttpStatus.OK);
+	}
+	
+	@PostMapping("test")
+	public @ResponseBody ResponseEntity<Object> test() {
+		return new ResponseEntity<Object>(new JwtAuthenticationRequest("test", "test123"), HttpStatus.OK);
+	}
+	
 }

@@ -10,10 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class JwtUser implements UserDetails {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1L;
 	private final String id;
     private final String username;
     private final String firstname;
@@ -25,7 +22,6 @@ public class JwtUser implements UserDetails {
     private final Date lastPasswordResetDate;
 
     public JwtUser(
-          String id,
           String username,
           String firstname,
           String lastname,
@@ -34,7 +30,7 @@ public class JwtUser implements UserDetails {
           boolean enabled,
           Date lastPasswordResetDate
     ) {
-        this.id = id;
+        this.id = username;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;

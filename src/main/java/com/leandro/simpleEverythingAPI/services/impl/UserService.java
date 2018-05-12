@@ -32,8 +32,7 @@ public class UserService implements IUserService {
 	public Object updateUser(User user) {
 		User toUpd = userRepo.findByUsername(user.getUsername());
 		if (toUpd != null) {
-			toUpd.setId(user.getId());
-			return userRepo.save(toUpd);
+			return userRepo.save(user);
 		}
 		return new Exception("User not found");
 	}
@@ -47,11 +46,4 @@ public class UserService implements IUserService {
 	public User findByUsername(String userName) {
 		return userRepo.findByUsername(userName);
 	}
-
-//	@Override
-//	public ResponseEntity<User> inactivateUser(String userName) {
-//		Query query = new Query();
-//		query.addCriteria(Criteria.where("userName").is(userName));
-//	}
-
 }
